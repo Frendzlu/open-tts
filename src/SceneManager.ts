@@ -13,6 +13,10 @@ export class SceneManager {
         camera.panningSensibility = 0;
         camera.lowerRadiusLimit = 10
         camera.upperRadiusLimit = 50
+        
+        scene.registerBeforeRender(() => {
+            canvas.focus()
+        });
 
         new HemisphericLight("light1", new Vector3(10, 12, 10), scene);
         let box1 = MeshBuilder.CreateBox("box", { width: 4, height: 2, depth: 3, }, scene)

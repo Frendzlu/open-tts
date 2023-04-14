@@ -22,10 +22,10 @@ export default class CustomInput implements ICameraInput<Camera> {
 
   attachControl(noPreventDefault?: boolean): void {
     this._scene = this.camera.getScene();
-    this._onKeyboardObserver = this._scene.onKeyboardObservable.add((info) => {
-      const evt = info.event;
+    this._onKeyboardObserver = this._scene.onKeyboardObservable.add((kbInfo) => {
+      const evt = kbInfo.event;
 
-      if (info.type === KeyboardEventTypes.KEYDOWN &&
+      if (kbInfo.type === KeyboardEventTypes.KEYDOWN &&
         (this.keysUp.indexOf(evt.keyCode) !== -1 ||
           this.keysDown.indexOf(evt.keyCode) !== -1 ||
           this.keysLeft.indexOf(evt.keyCode) !== -1 ||
@@ -74,10 +74,11 @@ export default class CustomInput implements ICameraInput<Camera> {
 
     this._keys = [];
   }
+
   checkInputs(): void {
+    //console.log(this._onKeyboardObserver)
     if (this._onKeyboardObserver) {
       const camera = this.camera;
-
       for (let index = 0; index < this._keys.length; index++) {
         const keyCode = this._keys[index];
         if (this.keysLeft.indexOf(keyCode) !== -1) {
