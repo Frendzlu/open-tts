@@ -76,7 +76,6 @@ export default class CustomInput implements ICameraInput<Camera> {
   }
 
   checkInputs(): void {
-    //console.log(this._onKeyboardObserver)
     if (this._onKeyboardObserver) {
       const camera = this.camera;
       for (let index = 0; index < this._keys.length; index++) {
