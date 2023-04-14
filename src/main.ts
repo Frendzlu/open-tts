@@ -1,30 +1,41 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { KeyListener } from './Listener';
-import OrbitFlyCamera from './OrbitFlyCamera';
+import "@babylonjs/core/Debug/debugLayer";
+import "@babylonjs/inspector";
+import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder } from "@babylonjs/core";
 
-const scene = new THREE.Scene();
+class App {
+    constructor() {
+        // create the canvas html element and attach it to the webpage
+        var canvas = document.createElement("canvas");
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+        canvas.id = "gameCanvas";
+        document.body.appendChild(canvas);
 
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+        // initialize babylon scene and engine
+        var engine = new Engine(canvas, true);
+        var scene = new Scene(engine);
 
-const camera = new OrbitFlyCamera(renderer.domElement, 75, window.innerWidth / window.innerHeight, 0.1, 1000)
+        var camera: ArcRotateCamera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), scene);
+        camera.attachControl(canvas, true);
+        var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
+        var sphere: Mesh = MeshBuilder.CreateSphere("sphere", { diameter: 1 }, scene);
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const edges = new THREE.EdgesGeometry(geometry);
-const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xff0000 }));
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
-scene.add(line)
+        // hide/show the Inspector
+        window.addEventListener("keydown", (ev) => {
+            // Shift+Ctrl+Alt+I
+            if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.keyCode === 73) {
+                if (scene.debugLayer.isVisible()) {
+                    scene.debugLayer.hide();
+                } else {
+                    scene.debugLayer.show();
+                }
+            }
+        });
 
-let debug = document.getElementById("sus")!
-function animate() {
-  requestAnimationFrame(animate);
-  let sphCoords = new THREE.Spherical().setFromCartesianCoords(...camera.position.toArray())
-  debug.innerText = `${(sphCoords.radius).toFixed(3)}\n${(sphCoords.phi).toFixed(3)}\n${(sphCoords.theta).toFixed(3)}`
-  camera.controls.update()
-  renderer.render(scene, camera);
+        // run the main render loop
+        engine.runRenderLoop(() => {
+            scene.render();
+        });
+    }
 }
-animate();
+new App();
