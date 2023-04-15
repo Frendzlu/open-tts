@@ -23,8 +23,40 @@ class App {
             }
         });
 
+        let isFullscreen: boolean = false
+
+        addEventListener("keydown", (e) => {
+            if (e.code === "F11") {
+                let maxHeight = window.screen.height,
+                    maxWidth = window.screen.width,
+                    curHeight = window.innerHeight,
+                    curWidth = window.innerWidth;
+                console.log(maxHeight, curHeight, maxWidth, curWidth)
+                if (maxWidth == curWidth && maxHeight == curHeight) {
+                } else {
+                    isFullscreen = true
+                    setTimeout(() => {
+                        resize()
+                        isFullscreen = false
+                    }, 200)
+                }
+
+            }
+        })
+
+        function resize() {
+            canvas.width = document.body.clientWidth
+            canvas.height = document.body.clientHeight
+            engine.resize()
+        }
+
+        const resize_ob = new ResizeObserver(function (entries) {
+            if (!isFullscreen) resize()
+        });
+        resize_ob.observe(document.body)
+
         engine.runRenderLoop(() => {
-            scene.render();
+            scene.render()
         });
     }
 }

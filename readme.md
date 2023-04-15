@@ -1,0 +1,33 @@
+5 podstawowych kształtów:
+- Box
+  - 3 parametry:
+    - width
+    - height
+    - depth
+  - bindowalne szerokość i głębokość oraz wszystkie 3
+- Cylinder
+  - 4 parametry
+    - top radius
+    - bottom radius
+    - height
+    - arc
+  - top radius i bottom radius bindowalne
+- Cylinder (tessellated)
+  - 5 parametrów
+    - top radius
+    - bottom radius
+    - height
+    - arc
+    - sides (tessellation)
+- Sphere 
+  - 5 parametrów
+    - radiusX
+    - radiusY
+    - radiusZ
+    - arc
+    - slice
+- Torus
+  - 3 parametry
+    - tessellation
+    - diameter
+    - thickness
